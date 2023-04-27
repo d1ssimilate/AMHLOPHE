@@ -11,32 +11,31 @@
     $birthday=$_POST['birthday'];
 
 
-    $add_user_str="INSERT INTO `users`(`name`, `surname`, `l_name`, `phone_number`, `password`, `mail`, `avatar`, `bitrhday`) VALUES ('$name','$surname','$l_name','$phone','$pass','$mail','dfgfdgfdg','$birthday')";
+    $add_user_str="INSERT INTO `users`(`name`, `surname`, `l_name`, `phone_number`, `password`, `mail`, `avatar`, `bitrhday`) VALUES ('$name','$surname','$l_name','$phone','$pass','$mail','../assets/img/user.png','$birthday')";
 
     if ($name && $surname && $l_name && $phone && $mail && $birthday) {
         if ($pass==$repass) {
             $run_add_user=mysqli_query($connect, $add_user_str);
             if ($run_add_user) {
-                $_SESSION['user']=array (
-                'id' => $out_user['id'],
-                'mail' => $out_user['mail'],
-                );
-                $_SESSION['mail']=$mail ;
-                $_SESSION['name']=$name ;
-                $_SESSION['surname']=$surname ;
-                $_SESSION['l_name']=$l_name ;
-                $_SESSION['mail']=$mail ;
-                $_SESSION['phone']=$phone ;
-                $_SESSION['birthday']=$birthday ;
-                header("Location:/profile.php");
+                $_SESSION['user'] = array (
+                    'id' => $user['id'],
+                    'name' => $user['name'],
+                    'surname' => $user['surname'],
+                    'l_name' => $user['l_name'],
+                    'phone_number' => $user['phone_number'],
+                    'mail' => $user['mail'],
+                    'bitrhday' => $user['bitrhday'],
+                    'avatar' => $user['avatar']
+                    );
+                header("Location:/controllers/exit.php");
             }
             else {
                 $_SESSION['mess_error']="Ошибка входа";
-                header("Location:/index.php");
+                header("Location:/registration.php");
             }
         }
         else {
-             $_SESSION['mess_error']="Пароли нет совпдают";
+             $_SESSION['mess_error']="Пароли нет совпадают";
             header("Location:/registration.php");
         }
     }

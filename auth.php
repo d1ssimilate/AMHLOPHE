@@ -1,4 +1,5 @@
 <?php
+    error_reporting(0);
     include 'controllers/db.php';
 ?>
 <!DOCTYPE html>
@@ -17,7 +18,7 @@
             <p class="auth_text">Авторизация</p>
             <form action="controllers/auth.php" method="POST">
                 <input type="text" name="mail" placeholder="Почта" class="mail_pass">
-                <input type="text" name="pass" placeholder="Пароль" class="mail_pass">
+                <input type="password" name="pass" placeholder="Пароль" class="mail_pass">
         <?php 
             echo "$_SESSION[mess_error]";
             unset($_SESSION['mess_error']);

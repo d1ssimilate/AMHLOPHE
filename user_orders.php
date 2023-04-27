@@ -2,7 +2,9 @@
     include 'controllers/db.php';
     error_reporting(0);
 
-    
+    if (!$_SESSION['user']) {
+        header("Location:auth.php");
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,16 +13,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AMHLOPHE</title>
-    <link rel="stylesheet" href="../сss/index.css">
+    <title>Document</title>
+    <link rel="stylesheet" href="сss/index.css">
 </head>
 
 <body>
     <div class="wrapper">
         <header>
-            <!----------------ШАПКА САЙТА---------------->
-            <div class="banner">
-                <div class="logo">
+            <div class="banner_profile">
+                <div class="logo_profile">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="47"
                         height="47" viewBox="0 0 376 380" class="logo">
                         <image id="Слой_1" data-name="Слой 1" width="376" height="380"
@@ -31,92 +32,18 @@
                         <span>надёжные кондиционеры</span>
                     </a>
                 </div>
-                <?php
-        if (!$_SESSION['user']) {
-            echo "
-            <div class=banner_content>
-                <div class=banner_contact>
-              <a class=phone href=>
-                  236(441)457-24-59
-              </a>
-              <a href=>
-                  amhlophe_company@gmail.com
-              </a>
-          </div>
-            <div class=auth>
-            <a href=auth.php>
-                <img src=assets/img/profile.png  class=profile_icon>
-            </a>
-            <a href=auth.php>Войти</a>
-        </div>";
-        }
-        elseif ($_SESSION['user']) {
-            $id = $_SESSION['user']['id'];
-            $name = $_SESSION['user']['name'];
-            $mail = $_SESSION['user']['mail'];
-
-            $out_users_str="SELECT * FROM `users` WHERE `id` = $id";
-            $run_out_users=mysqli_query($connect, $out_users_str);
-                    while ($out_user=mysqli_fetch_array($run_out_users)) {
-            echo " <div class=banner_content_user>
-            <div class=banner_contact>
-              <p class=phone href=>
-                  236(441)457-24-59
-              </p>
-              <p href=>
-                  amhlophe_company@gmail.com
-              </p>
-            </div>
-            <div class=auth>
-                <div class=profile_user>
-                    <div class=user_auth>
-                    <a class=to_profile href=profile.php>
-                        <p>$name</p>
-                        <p><span>$mail</span></p>
+                <div class="banner_content_profile">
+                    <div class="banner_content_left">
+                        <div class="back">
+                            <img src="assets/img/back.png" alt="" class="arrow">
+                            <p>Назад</p>
                         </div>
-                    </a>
-                    <img class=user_avatar_index src=$out_user[avatar]>
-                    </div>
-                </div>
-                </div>
-           
-            </div>
-            </div>";
-                    }
-        }
-        ?>
-            </div>
-    </div>
-    <!--
-    <div class="banner_content_user">
-    <div class="banner_contact">
-      <a class="phone" href="">
-          236(441)457-24-59
-      </a>
-      <a href="">
-          amhlophe_company@gmail.com
-      </a>
-    </div>
-    <div class="auth">
-        <div class="profile_user">
-            <div class="user_auth">
-                <a href="profile.php">Александр</a>
-                <a href="profile.php"><span>fgmrfd@gmail.com</span></a>
-              </div>
-              <div class="profile_avatar_auth">
-              </div>
-          </div>
-   
-    </div>
-    </div>
-  -->
-    <div class="nav">
-        <div class="search_main">
-            <form method="POST">
-                <input type="text" name="search" placeholder="Найти..." required>
-                <button type="submit" name="enter" value="Поиск"><img src="assets/img/search.png" alt=""
-                        class="search_icon"></button>
-                <?php
+                        <div class="search_profile">
+                            <form method="POST">
+                                <input type="text" name="search" placeholder="Найти..." required>
+                                <button type="submit" name="enter" value="Поиск"><img src="assets/img/search.png" alt=""
+                                        class="search_icon"></button>
+                                <?php
                             $search=$_POST['search'];
                             $enter=$_POST['enter'];
 
@@ -133,100 +60,93 @@
                                 }
                             }
                             ?>
-            </form>
-        </div>
-    </div>
-    </header>
-    <!----------------БАННЕР ТОВАРА---------------->
-    <div class="header">
-        <div class="header_content">
-            <?php
-            $out_prod_str="SELECT * FROM `products` WHERE `status` = '3'";
-            $run_out_prod=mysqli_query($connect , $out_prod_str);
-            $out_prod=mysqli_fetch_assoc($run_out_prod);
-            echo "
-            <a href=about_product.php?about_product_id=$out_prod[id]>
-                <img src=../$out_prod[img] class=header_img>
-            </a>
-            ";
-            ?>
-            <div class="header_content_top">
-                <p>Охлаждающий</p>
-                <p>Практичный</p>
-            </div>
-            <div class="header_content_center">
-                <p>КОНДИЦИОНЕР</p>
-                <p>КОНДИЦИОНЕР</p>
-                <p>КОНДИЦИОНЕР</p>
-                <p>КОНДИЦИОНЕР</p>
-            </div>
-            <div class="header_content_bottom">
-                <p>Красивый</p>
-                <p>Лучший</p>
-            </div>
-        </div>
-    </div>
-    <!----------------КАТЕГОРИИ ТОВАРОВ---------------->
-    <div class="categories">
-        <div class="category_content">
-            <p>Кондиционеры:</p>
-            <div class="category_cards">
-                <div class="category_cards_top">
-                    <a href="category_product/split_systems.php" class="link_category">
-                        <div class="category_card">
-                            <p>Сплит системы</p>
-                            <img src="assets/img/split1.png" alt="">
+                            </form>
                         </div>
-                    </a>
-                    <a href="category_product/mobile_conditioners.php" class="link_category">
-                        <div class="category_card">
-                            <p>Мобильные
-                                <br>Кондиционеры
-                            </p>
-                            <img src="assets/img/mobile.png" alt="">
+                    </div>
+                    <div class="banner_content_right">
+                        <div class="profile">
+                            <div class="user">
+                                <?php
+                    $id = $_SESSION['user']['id'];
+                    $name = $_SESSION['user']['name'];
+                    $mail = $_SESSION['user']['mail'];
+                    $l_name = $_SESSION['user']['l_name'];
+    
+                    $out_users_str="SELECT * FROM `users` WHERE `id` = $id";
+                    $run_out_users=mysqli_query($connect, $out_users_str);
+                    while ($out_user=mysqli_fetch_array($run_out_users)) {
+                        echo "
+                        <a class=to_profile href=profile.php>
+                        <p>$name</p>
+                        <p><span>$mail</span></p>
                         </div>
-                    </a>
-                    <a href="category_product/window_conditioners.php" class="link_category">
-                        <div class="category_card">
-                            <p>Оконные кондиционеры</p>
-                            <img src="assets/img/window.png" alt="">
+                        <img class=user_avatar_top src=$out_user[avatar]>
                         </div>
-                    </a>
-                    <a href="category_product/ceiling_conditioners.php" class="link_category">
-                        <div class="category_card">
-                            <p>Потолочные<br>
-                                Кондиционеры</p>
-                            <img src="assets/img/potolok.png" alt="">
+                    </a>";
+                    }
+                        ?>
+                            </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
-                <div class="category_cards_bottom">
-                    <a href="category_product/industrial_conditioners.php" class="link_category">
-                        <div class="category_card">
-                            <p>Промышленные<br>
-                                Кондиционеры</p>
-                            <img src="assets/img/production.png" alt="">
-                        </div>
-                    </a>
-                    <a href="category_product/channel_conditioners.php" class="link_category">
-                        <div class="category_card">
-                            <p>Канальные<br>Кондиционеры</p>
-                            <img src="assets/img/channel.png" alt="">
-                        </div>
-                    </a>
-                    <a href="category_product/colums_conditioners.php" class="link_category">
-                        <div class="category_card">
-                            <p>Колонные<br>
-                                Кондиционеры</p>
-                            <img src="assets/img/columns.png" alt="">
-                        </div>
-                    </a>
+        </header>
+        <div class="bg">
+            <div class="category">
+                <div class="category_top">
+                    <a href="profile.php">Профиль</a>
+                    <a href="index.php">Главная</a>
+                    <a href="user_orders.php">Мои заказы</a>
+                </div>
+                <span>Категории</span>
+                <div class="category_top">
+                    <a href="category_product/split_systems.php">Сплит системы</a>
+                    <a href="category_product/mobile_conditioners.php">Мобильные кондиционеры</a>
+                    <a href="category_product/ceiling_conditioners.php">Потолочные кондиционеры</a>
+                    <a href="category_product/window_conditioners.php">Оконные кондиционеры</a>
+                    <a href="category_product/industrial_conditioners.php">Промышленные кондиционеры</a>
+                    <a href="category_product/channel_conditioners.php">Канальные кондиционеры</a>
+                    <a href="category_product/colums_conditioners.php">Колонные кондиционеры</a>
                 </div>
             </div>
+            <div class="spit_system_contain">
+                <p>Мои заказы</p>
+                <?php
+                $id_user_session = $_SESSION['user']['id'];
+
+                $out_order_str="SELECT * FROM `orders` WHERE `id_user` = $id_user_session";
+                $run_out_order=mysqli_query($connect,$out_order_str);
+                while ($out_order=mysqli_fetch_array($run_out_order)) {
+                $out_prod_str="SELECT * FROM `products` WHERE `id` =$out_order[id_prod]";
+                $run_out_prod=mysqli_query($connect , $out_prod_str);
+                $out_prod=mysqli_fetch_assoc($run_out_prod);
+                    echo "
+                    <div class=order_user_contain>
+                        <a href=about_product.php?about_product_id=$out_prod[id]>
+                        <img src=../$out_prod[img]>
+                        </a>
+                        <div class=order_user_inf_contain>
+                            <div class=order_user_inf>
+                                <p>Название товара</p>
+                                <a href=about_product.php?about_product_id=$out_prod[id]>$out_prod[name_prod]
+                                </a>
+                            </div>
+                            <div class=order_user_inf_price_status>
+                                <p>Цена</p>
+                                <span>$out_prod[price] р
+                                </span>
+                            </div>
+                            <div class=order_user_inf_price_status>
+                                <p>Статус заказа</p>
+                                <span>$out_order[status]
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    ";
+                }
+                ?>
+            </div>
         </div>
-    </div>
-    <footer>
-        <!----------------ПОДВАЛ САЙТА---------------->
         <div class="footer">
             <div class="footer_content">
                 <div class="footer_text">
@@ -245,7 +165,6 @@
                 </div>
             </div>
         </div>
-    </footer>
     </div>
 </body>
 
